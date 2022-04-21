@@ -4,6 +4,7 @@ import fetch from "node-fetch";
 import "dotenv/config";
 import { createImage } from "./createImage.js";
 import fs from "fs";
+import path from "path";
 
 const token = process.env.TELEGRAM_TOKEN;
 
@@ -22,20 +23,26 @@ bot.onText(/\/pokemon/, async (msg, match) => {
   const res = await fetch(req)
     .then((response) => response.json())
     .then((data) => {
-      // const message = JSON.stringify(data)
-      // console.log(message)
-      // invia il messaggio
-
-      // var message = `Today's pokemon is the number ${data.id} - ${data.name}`;
-      // const photoURL =
-      //   data.sprites.other["official-artwork"].front_default;
-      // message += "\ntypes:";
-      // data.types.forEach((element) => {
-      //   console.log(element);
-      //   message += " " + element.type.name;
-      // });
-      // bot.sendMessage(chatId, message);
       if (!fs.existsSync(`./images/${data.id}.png`)) {
+        // elimina immagini vecchie
+
+        if (!fs.existsSync("images")) {
+          // crea la cartella images in caso non esista
+          fs.mkdirSync("images");
+        } else {
+          // cancella tutti i file nella cartella
+          var directory = "images";
+          fs.readdir(directory, (err, files) => {
+            if (err) throw err;
+
+            for (const file of files) {
+              fs.unlink(path.join(directory, file), (err) => {
+                if (err) throw err;
+              });
+            }
+          });
+        }
+        // scarica immagine
         createImage(data).then(() => {
           bot.sendPhoto(chatId, `./images/${data.id}.png`);
         });
