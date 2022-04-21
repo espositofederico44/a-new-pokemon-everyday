@@ -1,7 +1,9 @@
 import TelegramBot from "node-telegram-bot-api";
 import getIdOfTheDay from "./pokemon.js";
 import fetch from "node-fetch";
-import 'dotenv/config'
+import "dotenv/config";
+import { createImage } from "./createImage.js";
+import fs from "fs";
 
 const token = process.env.TELEGRAM_TOKEN;
 
@@ -23,16 +25,23 @@ bot.onText(/\/pokemon/, async (msg, match) => {
       // const message = JSON.stringify(data)
       // console.log(message)
       // invia il messaggio
-      var message = `Today's pokemon is the number ${data.id} - ${data.name}`;
-      const photoURL =
-        data.sprites.other["official-artwork"].front_default;
-      message += "\ntypes:";
-      data.types.forEach((element) => {
-        console.log(element);
-        message += " " + element.type.name;
-      });
+
+      // var message = `Today's pokemon is the number ${data.id} - ${data.name}`;
+      // const photoURL =
+      //   data.sprites.other["official-artwork"].front_default;
+      // message += "\ntypes:";
+      // data.types.forEach((element) => {
+      //   console.log(element);
+      //   message += " " + element.type.name;
+      // });
       // bot.sendMessage(chatId, message);
-      bot.sendPhoto(chatId, photoURL, { caption: message });
+      if (!fs.existsSync(`./images/${data.id}.png`)) {
+        createImage(data).then(() => {
+          bot.sendPhoto(chatId, `./images/${data.id}.png`);
+        });
+      } else {
+        bot.sendPhoto(chatId, `./images/${data.id}.png`);
+      }
       // per i tipi mettiamo per ogni tipo un'emoji
     });
 });
