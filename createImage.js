@@ -19,7 +19,7 @@ function generateParametrizedHTML(returnedJsonObj) {
 	  }]
 	}*/
   var html_string = `
-<html>
+  <html>
 <head>
   <link rel="stylesheet" href="./style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,15 +28,20 @@ function generateParametrizedHTML(returnedJsonObj) {
     href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
     rel="stylesheet"
   />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Signika:wght@500&display=swap" rel="stylesheet">
   <style>
  
 body{
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
+	margin: 0;
+   /* font-family: 'Roboto', sans-serif; */
+   
+  font-family: 'Signika', sans-serif;
 }
 .card-body {
     border-radius: 20px;
-    background-color: #e8e8e8;
+	background-color: white;
     width: fit-content;
 }
 .description{
@@ -44,9 +49,13 @@ body{
 }
 .id {
     color: #a6a6a6;
+	margin-bottom: 0.25rem
 }
 .name {
     text-transform: capitalize;
+	font-size: 2em;
+	margin: 0;
+	margin-bottom: 1rem
 }
 .type{
     display: inline-block;
@@ -124,15 +133,20 @@ body{
 .Fairy{ 
     background-color: #EE99AC
 }
+.Artwork {
+	background-color: #eee;
+	border-radius: 10px
+}
   </style>
 </head>
 <body>
   <div class="card-body">
-    <img src="${returnedJsonObj.IMG_URL}" alt="immagine del pokemon" />
-    <div class="description">
-      <p class="id">#${returnedJsonObj.ID}</p>
-      <p class="name">${returnedJsonObj.NAME}</p>
+  <img class="Artwork" src="${returnedJsonObj.IMG_URL}" alt="immagine del pokemon" />
+  <div class="description">
+    <p class="id">#${returnedJsonObj.ID}</p>
+    <p class="name">${returnedJsonObj.NAME}</p>
 `;
+
   returnedJsonObj.TYPES.forEach((element) => {
     html_string += `<div class="type ${element.type.name}">${element.type.name}</div>`;
   });
