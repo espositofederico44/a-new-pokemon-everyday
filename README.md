@@ -1,2 +1,2 @@
-# a-new-pokemon-everyday
- Telegram bot for sending a new pokèmon everyday
+# A new Pokémon everyday!
+ Telegram and Discord bot for sending to you a new pokèmon everyday.
